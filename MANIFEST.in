@@ -1,0 +1,24 @@
+# Include top-level documentation and metadata
+include README.md
+include LICENSE
+include requirements.txt
+include pyproject.toml
+include setup.cfg
+include MANIFEST.in
+
+# Include package data files (non-Python) inside chainedregressornn
+recursive-include chainedregressornn *.txt *.md *.csv *.yaml *.yml *.json
+
+# Include tests (optional — useful if you want them in the sdist)
+recursive-include tests *.py
+
+# Include documentation files
+recursive-include docs *
+
+# Exclude build artifacts and caches
+exclude *.pyc
+exclude *.pyo
+exclude __pycache__/*
+prune build
+prune dist
+prune *.egg-info

@@ -1,0 +1,57 @@
+Metadata-Version: 2.4
+Name: chained-regressor-nn
+Version: 0.1.1
+Summary: A chained regression approach combining traditional ML models with neural networks
+Home-page: https://github.com/GuyKaptue/chained-regressor-nn
+Author: Guy Kaptue
+Author-email: Guy Kaptue <guykaptue24@gmail.com>
+License: MIT
+Project-URL: Homepage, https://github.com/GuyKaptue/chained-regressor-nn
+Project-URL: Bug Tracker, https://github.com/GuyKaptue/chained-regressor-nn/issues
+Project-URL: Documentation, https://github.com/GuyKaptue/chained-regressor-nn#readme
+Keywords: machine learning,regression,neural networks,ensemble
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.8, <4
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: numpy>=1.26.0
+Requires-Dist: pandas>=2.2.0
+Requires-Dist: torch>=2.4.0
+Requires-Dist: scikit-learn>=1.4.0
+Requires-Dist: scipy>=1.11.0
+Provides-Extra: optional
+Requires-Dist: xgboost>=2.0.0; extra == "optional"
+Requires-Dist: lightgbm>=4.0.0; extra == "optional"
+Requires-Dist: catboost>=1.2.0; extra == "optional"
+Provides-Extra: dev
+Requires-Dist: pytest>=6.0; extra == "dev"
+Requires-Dist: pytest-cov>=2.0; extra == "dev"
+Requires-Dist: black>=21.0; extra == "dev"
+Requires-Dist: flake8>=3.8; extra == "dev"
+Requires-Dist: mypy>=0.800; extra == "dev"
+Provides-Extra: full
+Requires-Dist: xgboost>=2.0.0; extra == "full"
+Requires-Dist: lightgbm>=4.0.0; extra == "full"
+Requires-Dist: catboost>=1.2.0; extra == "full"
+Requires-Dist: pytest>=6.0; extra == "full"
+Requires-Dist: pytest-cov>=2.0; extra == "full"
+Requires-Dist: black>=21.0; extra == "full"
+Requires-Dist: flake8>=3.8; extra == "full"
+Requires-Dist: mypy>=0.800; extra == "full"
+Dynamic: author
+Dynamic: home-page
+Dynamic: license-file
+Dynamic: requires-python
