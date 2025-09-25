@@ -1,8 +1,65 @@
+{% set name = "chained-regressor-nn" %}
+{% set version = "0.1.1" %}
+
+package:
+  name: {{ name|lower }}
+  version: {{ version }}
+
 source:
-  url: https://github.com/GuyKaptue/chained-regressor-nn/archive/v0.1.1.tar.gz
-  sha256: <your-tarball-sha256>
+  # The URL should point to the PyPI sdist, not the GitHub release tarball,
+  # when submitting to conda-forge, as this is more reliable.
+  # However, since you provided a GitHub link, we'll use that, 
+  # but using the pypi URL is strongly recommended for final submission.
+  # url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
+  url: https://github.com/GuyKaptue/chained-regressor-nn/archive/v{{ version }}.tar.gz
+  sha256: 1c50709fe7bc18ae34c876fd4fd3cc06b3d1cd96ab0f57f164343846e43a2001 # You MUST replace this with the actual hash!
+
+build:
+  number: 0
+  noarch: python # This is appropriate since your project is pure Python (no C extensions)
+  # Standard installation script for a Python package
+  script: {{ PYTHON }} -m pip install . -vv
+
+requirements:
+  host:
+    - python >=3.8,<4.0
+    - pip
+    - setuptools >=61
+    - wheel
+
+  run:
+    - python >=3.8,<4.0
+    # Core dependencies from pyproject.toml
+    - numpy >=1.26.0
+    - pandas >=2.2.0
+    # Note: Conda typically uses 'pytorch' for the PyPI 'torch' package
+    - pytorch >=2.4.0
+    - scikit-learn >=1.4.0
+    - scipy >=1.11.0
+    
+  # Optional dependencies are included in the recipe to create separate packages 
+  # or to ensure users can install with extras, but for a base package, 
+  # it's simpler to manage these as separate features if they are large.
+  # If you want to include these, you'd typically make separate 'variants' or 'features'
+  # in a more complex recipe, but for simplicity, we stick to the core for staged-recipes.
+  # If you decide to include all optional dependencies:
+  # - xgboost >=2.0.0
+  # - lightgbm >=4.0.0
+  # - catboost >=1.2.0
+
+test:
+  imports:
+    - chainedregressornn
 
 about:
   home: https://github.com/GuyKaptue/chained-regressor-nn
   license: MIT
-  summary: A modular regression pipeline combining ML models with neural networks
+  license_file: LICENSE # Standard practice is to list the file name
+  summary: {{ description }}
+  description: "A modular regression pipeline combining traditional ML models with neural networks for tabular prediction tasks."
+  doc_url: https://github.com/GuyKaptue/chained-regressor-nn#readme
+  dev_url: https://github.com/GuyKaptue/chained-regressor-nn
+
+extra:
+  recipe-maintainers:
+    - GuyKaptue

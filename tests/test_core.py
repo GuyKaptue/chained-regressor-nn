@@ -101,7 +101,7 @@ def test_predict_with_sparse_nn_output(generate_sample_orders):
     }
     
     regressor = ChainedRegressorNN(target=target, regressors=regressors, use_nn=True)
-    nn_model = NeuralRegressor(input_dim=10, hidden_dims=[10])
+    nn_model = NeuralRegressor(input_dim=29, hidden_dims=[10])
     
     # 1. Define the DESIRED final prediction output
     desired_prediction = np.array([1.5, 2.5, 3.5])

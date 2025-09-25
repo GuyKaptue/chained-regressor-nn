@@ -8,7 +8,7 @@ This module provides:
 ---------------------
 1. safe_hstack_hybrid — a robust horizontal stacking function that preserves
    sparsity when possible and ensures dimension safety.
-2. DEFAULT_REGRESSORS — a dictionary of pre‑configured scikit‑learn regressors,
+2. DEFAULT_REGRESSORS — a dictionary of pre-configured scikit-learn regressors,
    with optional inclusion of XGBoost, LightGBM, and CatBoost if installed.
 
 Author
@@ -23,7 +23,12 @@ from scipy.sparse import issparse, hstack as sparse_hstack, csr_matrix # type:ig
 from typing import Any, Union
 
 # Core regressors from scikit-learn
-from sklearn.linear_model import LinearRegression, Ridge, Lasso, ElasticNet # type:ignore
+from sklearn.linear_model import (  # type:ignore
+    LinearRegression, 
+    Ridge, 
+    Lasso, 
+    ElasticNet,  # Trailing comma is now allowed here
+)
 from sklearn.ensemble import RandomForestRegressor, GradientBoostingRegressor # type:ignore
 from sklearn.svm import SVR # type:ignore
 from sklearn.neighbors import KNeighborsRegressor # type:ignore

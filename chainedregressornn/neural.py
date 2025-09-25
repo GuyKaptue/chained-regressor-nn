@@ -119,8 +119,8 @@ def set_seed(seed=42):
         torch.cuda.manual_seed_all(seed)
 
 
-def train_neural_network(X, y, input_dim, hidden_dims=None,
-                         lr=0.001, epochs=500, dropout=0.2, verbose=True,
+def train_neural_network(X, y, input_dim, epochs, hidden_dims=None,
+                         lr=0.001, dropout=0.2, verbose=True,
                          device=None, seed=42, print_every=50):
     """
     Train a neural network for regression.

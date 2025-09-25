@@ -24,7 +24,7 @@ from sklearn.base import clone # type:ignore
 from sklearn.compose import ColumnTransformer # type:ignore
 from sklearn.preprocessing import StandardScaler, OneHotEncoder # type:ignore
 from sklearn.model_selection import cross_val_score, KFold # type:ignore
-from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score # type:ignore
+from sklearn.metrics import mean_squared_error, root_mean_squared_error, mean_absolute_error, r2_score # type:ignore
 from scipy.sparse import issparse, csr_matrix # type:ignore
 
 from .neural import NeuralRegressor, train_neural_network
@@ -87,6 +87,9 @@ class ChainedRegressorNN:
         self.preprocessor = None
         self.feature_cols = None
         self.current_prediction = None
+        self.training_duration_ = None  
+        self.metrics_ = {} 
+        self.stage_results_ = [] 
 
     def _preprocess_dates(self, df: pd.DataFrame) -> pd.DataFrame:
         """Expand datetime columns into year, month, and day components."""
@@ -213,19 +216,52 @@ class ChainedRegressorNN:
         X_proc = preprocessor.fit_transform(df_with_target)
         X_current = X_proc
         self.pipeline = []
+        self.stage_results_ = []
+
+        # --- Overall Training Loop Start ---
+        overall_start_time = time.time() 
 
         # Train each regressor (and optional NN stage)
         for i, (name, reg) in enumerate(self.regressors.items()):
             if verbose:
                 print(f"\nTraining regressor {i+1}/{len(self.regressors)}: {name}")
 
+            # --- Regressor Stage Start ---
+            stage_start_time = time.time()
+
             reg_clone = clone(reg)
             reg_clone.fit(X_current, y)
+
+            stage_end_time = time.time()
+            stage_duration = stage_end_time - stage_start_time
+
             preds = reg_clone.predict(X_current)
+
+            # Compute and store metrics for the current regressor stage
+            stage_metrics = {
+                "RMSE": root_mean_squared_error(y, preds),
+                "MAE": mean_absolute_error(y, preds),
+                "R2": r2_score(y, preds)
+            }
+            self.stage_results_.append({
+                "stage_name": name,
+                "duration_seconds": stage_duration,
+                "metrics": stage_metrics
+            })
+
+            if verbose:
+                print(f"  Duration: {stage_duration:.2f}s | RMSE: {stage_metrics['RMSE']:.4f}, R2: {stage_metrics['R2']:.4f}")
+
+            # --- Regressor Stage End ---
+
             X_current = safe_hstack_hybrid(X_current, preds)
             self.pipeline.append((name, reg_clone))
 
+
+            # --- Neural Network Stage (if applicable) ---
             if self.use_nn and i < len(self.regressors) - 1:
+                nn_stage_start_time = time.time()
+                nn_name = f"nn_{i+1}"
                 if verbose:
                     print(f"  Training neural net after {name} (stage {i+1})...")
                 X_nn = safe_hstack_hybrid(X_current, np.zeros((X_current.shape[0], 0)), force_dense=True)
@@ -236,14 +272,62 @@ class ChainedRegressorNN:
                     epochs=nn_epochs,
                     verbose=verbose
                 )
+                nn_stage_end_time = time.time()
+                nn_stage_duration = nn_stage_end_time - nn_stage_start_time
+
+                # Compute and store metrics for the NN stage
+                nn_metrics = {
+                    "RMSE": root_mean_squared_error(y, preds_nn.flatten()),
+                    "MAE": mean_absolute_error(y, preds_nn.flatten()),
+                    "R2": r2_score(y, preds_nn.flatten())
+                }
+                self.stage_results_.append({
+                    "stage_name": nn_name,
+                    "duration_seconds": nn_stage_duration,
+                    "metrics": nn_metrics
+                })
+
+                if verbose:
+                    print(f"  NN Duration: {nn_stage_duration:.2f}s | RMSE: {nn_metrics['RMSE']:.4f}, R2: {nn_metrics['R2']:.4f}")
+
+
                 preds_nn_sparse = csr_matrix(preds_nn)
                 X_current = safe_hstack_hybrid(X_current, preds_nn_sparse)
                 self.pipeline.append((f"nn_{i+1}", nn_model))
 
+        overall_end_time = time.time() # Stop the timer
+        self.training_duration_ = overall_end_time - overall_start_time
+        # --- Overall Training Loop End ---
+
+        # Evaluate and log final overall results (using the entire pipeline)
+        final_preds = self.predict(X) 
+
+        # Compute overall final metrics
+        self.metrics_ = {
+            "RMSE": root_mean_squared_error(y, final_preds),
+            "MAE": mean_absolute_error(y, final_preds),
+            "R2": r2_score(y, final_preds)}
+        
         if verbose:
-            print("\nTraining complete! Pipeline built with:")
-            for step_name, _ in self.pipeline:
-                print(f"  • {step_name}")
+            print("\n===============================================")
+            print(" Overall Training Summary")
+            print("===============================================")
+            n_samples = len(df)
+
+            for result in self.stage_results_:
+                time_per_sample = result["duration_seconds"] / n_samples
+                print(f"  • {result['stage_name']} "
+                      f"({result['duration_seconds']:.2f}s, {time_per_sample:.6f}s/sample) "
+                      f"- RMSE: {result['metrics']['RMSE']:.4f}, "
+                      f"R2: {result['metrics']['R2']:.4f}")
+
+            total_time_per_sample = self.training_duration_ / n_samples
+            print(f"\nTotal Training Duration: {self.training_duration_:.2f} seconds "
+                  f"({total_time_per_sample:.6f}s/sample)")
+            print("Final Metrics:", self.metrics_)
+            print("===============================================\n")
+            
+        return self
 
     def _to_tensor(self, X):
         """Ensure input is a float32 torch.Tensor, handling sparse/dense/DF."""
