@@ -9,7 +9,11 @@ chainedregressornn/__init__.py
 chainedregressornn/core.py
 chainedregressornn/neural.py
 chainedregressornn/utils.py
+docs/kap_formula_paper.pdf
 tests/__init__.py
 tests/conftest.py
 tests/test_core.py
+tests/test_coverage_extra.py
 tests/test_neural.py
+tests/test_pipeline.py
+tests/test_utils.py

@@ -74,6 +74,7 @@ setup(
             "mypy>=0.800",
         ],
     },
+    data_files=[("docs", ["docs/kap_formula_paper.pdf"])],
     include_package_data=True,
     zip_safe=False,
 )

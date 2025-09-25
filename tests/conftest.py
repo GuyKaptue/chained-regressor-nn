@@ -6,10 +6,18 @@ import numpy as np # type:ignore
 import warnings
 from sklearn.exceptions import ConvergenceWarning # type: ignore
 
+
+
 warnings.filterwarnings("ignore", category=ConvergenceWarning)
 warnings.filterwarnings(
     "ignore",
     message="X does not have valid feature names, but LGBMRegressor was fitted with feature names"
+)
+
+
+warnings.filterwarnings(
+    "ignore",
+    message=".*CatBoostRegressor.*__sklearn_tags__.*"
 )
 
 @pytest.fixture

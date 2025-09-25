@@ -21,7 +21,7 @@ black>=21.0
 flake8>=3.8
 mypy>=0.800
 
-[optional]
+[ml]
 xgboost>=2.0.0
 lightgbm>=4.0.0
 catboost>=1.2.0

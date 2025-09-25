@@ -6,6 +6,15 @@ include pyproject.toml
 include setup.cfg
 include MANIFEST.in
 
+include *.md
+include *.txt
+include *.pdf
+recursive-include chainedregressornn *.py *.md *.txt *.pdf
+
+
+include docs/kap_formula_paper.pdf
+
+
 # Include package data files (non-Python) inside chainedregressornn
 recursive-include chainedregressornn *.txt *.md *.csv *.yaml *.yml *.json
 

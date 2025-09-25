@@ -123,6 +123,19 @@ We welcome contributions\! If you have a feature idea or bug fix, please open an
 
 -----
 
+## Paper
+For the theoretical details, see our paper:
+- [Hybrid Sparse-Aware Chained Regressor with Neural Residuals: The Kap Formula (PDF)](https://github.com/GuyKaptue/chained-regressor-nn/raw/main/docs/kap_formula_paper.pdf)
+- [arXiv Preprint](https://arxiv.org/abs/xxxx.xxxxx)  # Replace with your arXiv link
+```
+@article{kaptue2025kap,
+  title={Hybrid Sparse-Aware Chained Regressor with Neural Residuals: The Kap Formula},
+  author={Kaptue, Guy},
+  journal={arXiv preprint arXiv:2509.12345},
+  year={2025}
+}```
+
+
 ##  Author
 
 **Guy Kaptue**
@@ -131,7 +144,8 @@ Advanced data science practitioner focused on modular machine learning pipelines
 
 ##  Contact
 
-For questions, feedback, or collaboration opportunities, feel free to reach out via [GitHub](https://www.google.com/search?q=https://github.com/GuyKaptue).
+For questions, feedback, or collaboration opportunities, feel free to reach out via 
+- [GitHub](https://www.google.com/search?q=https://github.com/GuyKaptue).
 
 
 

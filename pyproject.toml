@@ -8,11 +8,11 @@ version = "0.1.1"
 authors = [
     { name = "Guy Kaptue", email = "guykaptue24@gmail.com" }
 ]
-description = "A chained regression approach combining traditional ML models with neural networks"
+description = "A modular regression pipeline combining traditional ML models with neural networks for tabular prediction tasks."
 readme = "README.md"
-requires-python = ">=3.8, <4"
-keywords = ["machine learning", "regression", "neural networks", "ensemble"]
-license = { text = "MIT" }
+requires-python = ">=3.8,<4.0"
+keywords = ["machine learning", "regression", "neural networks", "ensemble", "pipeline", "tabular data"]
+license = { file = "LICENSE" }
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
@@ -29,26 +29,27 @@ classifiers = [
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
     "Topic :: Software Development :: Libraries :: Python Modules",
 ]
+
 dependencies = [
     "numpy>=1.26.0",
     "pandas>=2.2.0",
     "torch>=2.4.0",
     "scikit-learn>=1.4.0",
-    "scipy>=1.11.0",
+    "scipy>=1.11.0"
 ]
 
 [project.optional-dependencies]
-optional = [
+ml = [
     "xgboost>=2.0.0",
     "lightgbm>=4.0.0",
-    "catboost>=1.2.0",
+    "catboost>=1.2.0"
 ]
 dev = [
     "pytest>=6.0",
     "pytest-cov>=2.0",
     "black>=21.0",
     "flake8>=3.8",
-    "mypy>=0.800",
+    "mypy>=0.800"
 ]
 full = [
     "xgboost>=2.0.0",
@@ -58,20 +59,28 @@ full = [
     "pytest-cov>=2.0",
     "black>=21.0",
     "flake8>=3.8",
-    "mypy>=0.800",
+    "mypy>=0.800"
 ]
 
 [project.urls]
 Homepage = "https://github.com/GuyKaptue/chained-regressor-nn"
 "Bug Tracker" = "https://github.com/GuyKaptue/chained-regressor-nn/issues"
 Documentation = "https://github.com/GuyKaptue/chained-regressor-nn#readme"
+Paper = "https://github.com/GuyKaptue/chained-regressor-nn/raw/main/docs/kap_formula_paper.pdf"
+Source = "https://github.com/GuyKaptue/chained-regressor-nn"
 
 [tool.setuptools]
 packages = ["chainedregressornn"]
 
+
+
+[tool.setuptools.package-data]
+chainedregressornn = ["py.typed", "*.pdf", "*.md", "*.txt"]
+
+
 [tool.black]
 line-length = 88
-target-version = ['py38', 'py39', 'py310', 'py311', 'py312', 'py313']
+target-version = ["py38", "py39", "py310", "py311", "py312", "py313"]
 include = '\.pyi?$'
 extend-exclude = '''
 /(

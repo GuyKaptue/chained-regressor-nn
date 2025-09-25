@@ -1,0 +1,8 @@
+source:
+  url: https://github.com/GuyKaptue/chained-regressor-nn/archive/v0.1.1.tar.gz
+  sha256: <your-tarball-sha256>
+
+about:
+  home: https://github.com/GuyKaptue/chained-regressor-nn
+  license: MIT
+  summary: A modular regression pipeline combining ML models with neural networks
